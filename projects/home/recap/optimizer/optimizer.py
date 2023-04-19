@@ -65,10 +65,10 @@ class RecapLRShim(torch.optim.lr_scheduler._LRScheduler):
     return self._get_closed_form_lr()
 
   def _get_closed_form_lr(self):
-    learning_rates = []
-
-    for lr_config in self.lr_dict.values():
-      learning_rates.append(compute_lr(lr_config, self.last_epoch))
+    learning_rates = [
+        compute_lr(lr_config, self.last_epoch)
+        for lr_config in self.lr_dict.values()
+    ]
     # WARNING: The order of appending is important.
     if self.emb_learning_rate:
       learning_rates.append(compute_lr(self.emb_learning_rate, self.last_epoch))
